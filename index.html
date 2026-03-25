@@ -1,626 +1,131 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Мой сайт</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обращение к Леону</title>
 
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --accent: #c8f542;
-      --text: #f0ede6;
-      --muted: #555;
-      --border: #1e1e1e;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 
-    html { scroll-behavior: smooth; }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Manrope', sans-serif;
-      overflow-x: hidden;
-      cursor: none;
-    }
+body {
+    background: radial-gradient(circle at top, #1a1a1a, #000);
+    color: white;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-    /* Custom cursor */
-    .cursor {
-      width: 12px; height: 12px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s, width 0.3s, height 0.3s;
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(200,245,66,0.4);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s;
-    }
-    .cursor.hovered { width: 20px; height: 20px; }
-    .cursor-ring.hovered { width: 56px; height: 56px; border-color: var(--accent); }
+.container {
+    text-align: center;
+    max-width: 700px;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 80px rgba(255, 0, 0, 0.2);
+    animation: fadeIn 1.2s ease;
+}
 
-    /* Noise overlay */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 1000; opacity: 0.5;
-    }
+h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #ff4d4d, #ff0000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 24px 48px;
-      z-index: 100;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    nav.scrolled {
-      background: rgba(10,10,10,0.9);
-      border-color: var(--border);
-      backdrop-filter: blur(12px);
-    }
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      letter-spacing: 2px;
-      color: var(--accent);
-    }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
+.subtitle {
+    font-size: 18px;
+    opacity: 0.7;
+    margin-bottom: 30px;
+}
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 120px 48px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg-text {
-      position: absolute;
-      bottom: -40px; right: -20px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(120px, 18vw, 280px);
-      color: transparent;
-      -webkit-text-stroke: 1px #1a1a1a;
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-      animation: float 8s ease-in-out infinite;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
+.highlight {
+    font-weight: 600;
+    color: #ff4d4d;
+}
 
-    .hero-left { position: relative; z-index: 2; }
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: 100px;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 32px;
-      animation: fadeUp 0.8s ease both;
-    }
-    .hero-tag::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s ease infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.5); }
-    }
+.counter {
+    font-size: 40px;
+    margin: 20px 0;
+    color: #fff;
+}
 
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(64px, 8vw, 120px);
-      line-height: 0.95;
-      letter-spacing: 2px;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-    h1 em {
-      font-style: normal;
-      color: var(--accent);
-    }
-    .hero-desc {
-      margin-top: 28px;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--muted);
-      max-width: 400px;
-      font-weight: 300;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-    .hero-cta {
-      display: flex; gap: 16px; margin-top: 40px;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px;
-      font-family: 'Manrope', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: all 0.25s;
-      cursor: none;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #0a0a0a;
-    }
-    .btn-primary:hover { background: #d4ff4a; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,245,66,0.25); }
-    .btn-ghost {
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+button {
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(90deg, #ff4d4d, #ff0000);
+    color: white;
+    transition: 0.3s;
+}
 
-    /* Hero right - decorative card stack */
-    .hero-right {
-      display: flex; justify-content: center; align-items: center;
-      position: relative; z-index: 2;
-      animation: fadeUp 0.8s 0.4s ease both;
-    }
-    .card-stack { position: relative; width: 320px; height: 380px; }
-    .card-item {
-      position: absolute;
-      width: 100%; height: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .card-item:nth-child(1) { transform: rotate(-6deg) translate(-20px, 20px); background: #0f1a00; border-color: #1a2e00; }
-    .card-item:nth-child(2) { transform: rotate(3deg) translate(15px, -10px); background: #0d0d0d; }
-    .card-item:nth-child(3) { transform: rotate(0deg); z-index: 3; }
-    .card-main {
-      padding: 32px;
-      height: 100%;
-      display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .card-chip {
-      width: 48px; height: 36px;
-      background: linear-gradient(135deg, #c8f542, #8ab530);
-      border-radius: 6px;
-      margin-bottom: 24px;
-    }
-    .card-label {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    .card-value {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px;
-      color: var(--accent);
-      letter-spacing: 2px;
-    }
-    .card-footer {
-      display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    .card-name {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .card-dots { display: flex; gap: 6px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot:nth-child(1) { background: #ff6b6b; }
-    .dot:nth-child(2) { background: #ffd93d; }
-    .dot:nth-child(3) { background: var(--accent); }
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px red;
+}
 
-    /* SECTION */
-    section { padding: 100px 48px; }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(40px, 5vw, 72px);
-      letter-spacing: 2px;
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-    .section-sub {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.7;
-      max-width: 480px;
-      font-weight: 300;
-    }
-
-    /* ABOUT */
-    .about { border-top: 1px solid var(--border); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      margin-top: 64px;
-    }
-    .about-text {
-      font-size: 15px;
-      line-height: 1.9;
-      color: #888;
-      font-weight: 300;
-    }
-    .about-text strong { color: var(--text); font-weight: 500; }
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-    }
-    .stat {
-      background: var(--surface);
-      padding: 32px 24px;
-      border: 1px solid var(--border);
-    }
-    .stat:hover { border-color: #2a2a2a; }
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 52px;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
-
-    /* WORKS */
-    .works { border-top: 1px solid var(--border); }
-    .works-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 48px;
-    }
-    .works-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .work-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s;
-      cursor: none;
-    }
-    .work-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(200,245,66,0.04), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .work-card:hover { border-color: #2a2a2a; }
-    .work-card:hover::before { opacity: 1; }
-    .work-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 72px;
-      color: #1a1a1a;
-      line-height: 1;
-      margin-bottom: 24px;
-    }
-    .work-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .work-desc {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .work-tag {
-      display: inline-block;
-      margin-top: 24px;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
-      border-radius: 100px;
-    }
-
-    /* CONTACT */
-    .contact {
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-    .contact-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(60px, 10vw, 140px);
-      letter-spacing: 4px;
-      line-height: 1;
-      margin: 40px 0;
-      background: linear-gradient(180deg, var(--text) 0%, #333 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-    .contact-link {
-      display: flex; align-items: center; gap: 8px;
-      padding: 14px 24px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      transition: all 0.25s;
-      cursor: none;
-    }
-    .contact-link:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    footer span { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 768px) {
-      nav { padding: 20px 24px; }
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
-      .hero-right { display: none; }
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .works-grid { grid-template-columns: 1fr; }
-      section { padding: 60px 24px; }
-      footer { flex-direction: column; gap: 12px; text-align: center; }
-    }
-  </style>
+.footer {
+    margin-top: 30px;
+    font-size: 14px;
+    opacity: 0.4;
+}
+</style>
 </head>
+
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="container">
+    <h1>Леон Мотовских, пора действовать</h1>
 
-<nav id="nav">
-  <div class="logo">SITE</div>
-  <ul class="nav-links">
-    <li><a href="#about">Обо мне</a></li>
-    <li><a href="#works">Работы</a></li>
-    <li><a href="#contact">Контакт</a></li>
-  </ul>
-</nav>
+    <div class="subtitle">
+        Общественность уже давно ждёт, когда вы <span class="highlight">заблокируете сайт географу</span>
+    </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">НЕ Доступен для работы</div>
-    <h1>Привет,<br>я <em>Нет.</em></h1>
-    <p class="hero-desc">Создаю цифровые продукты, которые выглядят хорошо и работают ещё лучше. Дизайн, код, идеи — всё в одном месте.</p>
-    <div class="hero-cta">
-      <a href="#works" class="btn btn-primary">Посмотреть работы</a>
-      <a href="#contact" class="btn btn-ghost">Написать мне</a>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="card-stack">
-      <div class="card-item"></div>
-      <div class="card-item"></div>
-      <div class="card-item">
-        <div class="card-main">
-          <div>
-            <div class="card-chip"></div>
-            <div class="card-label">Специализация</div>
-            <div class="card-value">WEB</div>
-          </div>
-          <div class="card-footer">
-            <div>
-              <div class="card-label">Имя</div>
-              <div class="card-name">Ivan Dev</div>
-            </div>
-            <div class="card-dots">
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-bg-text">MAKE</div>
-</section>
+    <div class="counter" id="counter">1024 человек ждут</div>
 
-<!-- ABOUT -->
-<section class="about" id="about">
-  <div class="section-label">О себе</div>
-  <div class="section-title">Кто я такой</div>
-  <div class="about-grid reveal">
-    <div class="about-text">
-      <p>Я <strong>веб-разработчик и дизайнер</strong>, который любит создавать красивые и функциональные сайты. Работаю с современными технологиями и уделяю особое внимание деталям.</p>
-      <br>
-      <p>Мой подход — это <strong>минимализм в дизайне</strong> и <strong>чистота в коде</strong>. Верю, что хороший продукт должен быть простым в использовании и приятным визуально.</p>
-      <br>
-      <p>Открыт к новым проектам и коллаборациям. Если у вас есть идея — давайте её воплотим.</p>
-    </div>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num">3+</div>
-        <div class="stat-label">Года опыта</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">24</div>
-        <div class="stat-label">Проекта</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">18</div>
-        <div class="stat-label">Клиентов</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Кофе выпито</div>
-      </div>
-    </div>
-  </div>
-</section>
+    <button onclick="increase()">Поддержать давление</button>
 
-<!-- WORKS -->
-<section class="works" id="works">
-  <div class="works-header reveal">
-    <div>
-      <div class="section-label">Портфолио</div>
-      <div class="section-title">Мои работы</div>
+    <div class="footer">
+        *Стоит задуматься.
     </div>
-    <p class="section-sub">Несколько избранных проектов, которыми горжусь.</p>
-  </div>
-  <div class="works-grid">
-    <div class="work-card reveal">
-      <div class="work-num">01</div>
-      <div class="work-title">Интернет-магазин</div>
-      <div class="work-desc">Полноценный e-commerce проект с корзиной, оплатой и личным кабинетом пользователя.</div>
-      <div class="work-tag">React · Node.js</div>
-    </div>
-    <div class="work-card reveal">
-      <div class="work-num">02</div>
-      <div class="work-title">Дашборд аналитики</div>
-      <div class="work-desc">Визуализация данных в реальном времени для внутреннего использования компании.</div>
-      <div class="work-tag">Vue · D3.js</div>
-    </div>
-    <div class="work-card reveal">
-      <div class="work-num">03</div>
-      <div class="work-title">Мобильное приложение</div>
-      <div class="work-desc">Трекер привычек с уведомлениями и статистикой. 500+ активных пользователей.</div>
-      <div class="work-tag">React Native</div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="contact" id="contact">
-  <div class="section-label reveal">Связаться</div>
-  <div class="contact-title reveal">ДАВАЙ<br>РАБОТАТЬ</div>
-  <p class="section-sub reveal" style="margin: 0 auto;">Есть проект или идея? Напишите мне, и мы обсудим детали. Всегда рад новым знакомствам.</p>
-  <div class="contact-links reveal">
-    <a href="mailto:hello@example.com" class="contact-link">✉ Email</a>
-    <a href="https://t.me/username" class="contact-link">✈ Telegram</a>
-    <a href="https://github.com/username" class="contact-link">⌥ GitHub</a>
-    <a href="https://linkedin.com/in/username" class="contact-link">◈ LinkedIn</a>
-  </div>
-</section>
-
-<footer>
-  <span class="logo" style="font-size:18px">SITE</span>
-  <span>© 2026 — Сделано с ♥</span>
-  <span>Lelystad, NL</span>
-</footer>
+</div>
 
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0;
+let count = 999;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-    ring.style.left = mx + 'px';
-    ring.style.top = my + 'px';
-  });
+function increase() {
+    count += Math.floor(Math.random() * 10) + 1;
+    document.getElementById("counter").innerText = count + " человек ждут";
 
-  document.querySelectorAll('a, button, .work-card').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.classList.add('hovered');
-      ring.classList.add('hovered');
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.classList.remove('hovered');
-      ring.classList.remove('hovered');
-    });
-  });
-
-  // Nav scroll
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
-  });
-
-  // Reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      }
-    });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+    if (count > 1100) {
+        document.body.style.boxShadow = "inset 0 0 100px red";
+    }
+}
 </script>
+
 </body>
 </html>
